@@ -1,8 +1,8 @@
-use clap::{App, Arg};
+use clap::{crate_version, App, Arg};
 
 pub fn cmd_app() -> App<'static, 'static> {
 	let app = App::new("naudit")
-		.version("1.0")
+		.version(&crate_version!()[..])
 		.about("npm multi package audit")
 		.arg(
 			Arg::with_name("clean")
@@ -17,12 +17,7 @@ pub fn cmd_app() -> App<'static, 'static> {
 				.help("Do not do a npm install")
 				.takes_value(false),
 		)
-		.arg(
-			Arg::with_name("no_audit")
-				.long("no-audit")
-				.help("Do not do a npm audit")
-				.takes_value(false),
-		)
+		.arg(Arg::with_name("no_audit").long("no-audit").help("Do not do a npm audit").takes_value(false))
 		.arg(Arg::with_name("PATH").help("Path to root"));
 
 	app

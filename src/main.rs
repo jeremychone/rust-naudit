@@ -55,10 +55,7 @@ fn main() {
 	let package_path = root.to_path_buf().join("package.json");
 	let package_path = package_path.as_path();
 	if !package_path.is_file() {
-		println!(
-			"ERROR - Path '{}' does not contain a package.json - abort",
-			package_path.to_str().unwrap()
-		);
+		println!("ERROR - Path '{}' does not contain a package.json - abort", package_path.to_str().unwrap());
 		return;
 	}
 
@@ -102,15 +99,13 @@ fn main() {
 		let mut audit_content = String::new();
 		for (dir, name) in dirs.iter() {
 			let out = cmd_audit(dir);
-			let txt = format!("\n==== AUDIT FOR  {} ===={}\n", name, out);
+			let txt = format!("\n==== AUDIT FOR  {} ====\n{}\n", name, out);
 			println!("{}", txt);
 			audit_content.push_str(&txt);
 		}
 
 		// write the audit file content
-		audit_content.push_str(
-			"\n\n========= NOTE:\nnpm audit --audit-level=moderate (for each node directory)\n",
-		);
+		audit_content.push_str("\n\n========= NOTE:\nnpm audit --audit-level=moderate (for each node directory)\n");
 
 		let audit_file = audit_dir.join("_audit.txt");
 		match write(&audit_file, audit_content) {
@@ -198,11 +193,7 @@ fn cmd_audit(dir: &Path) -> String {
 	// clean each line
 	output = output
 		.lines()
-		.map(|s| {
-			s.replace(|c: char| !c.is_alphanumeric() && !c.is_whitespace(), "")
-				.trim()
-				.to_owned()
-		})
+		.map(|s| s.replace(|c: char| !c.is_alphanumeric() && !c.is_whitespace(), "").trim().to_owned())
 		.collect::<Vec<String>>()
 		.join("\n");
 	output
@@ -251,13 +242,10 @@ fn list_package_dirs(root: &Path) -> Result<Vec<(PathBuf, String)>, MainError> {
 	let root = canonicalize(root)?;
 	let root = root.as_path();
 
-	let walker = globwalk::GlobWalkerBuilder::from_patterns(
-		root.to_str().unwrap(),
-		&["**/*/package.json", "!**/node_modules/*", "!.git/*"],
-	)
-	.build()?
-	.into_iter()
-	.filter_map(Result::ok);
+	let walker = globwalk::GlobWalkerBuilder::from_patterns(root.to_str().unwrap(), &["**/*/package.json", "!**/node_modules/*", "!.git/*"])
+		.build()?
+		.into_iter()
+		.filter_map(Result::ok);
 
 	let mut v: Vec<(PathBuf, String)> = walker
 		.map(|e| {
