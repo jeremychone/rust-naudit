@@ -1,6 +1,6 @@
 [package]
 name = "naudit"
-version = "0.1.2"
+version = "0.1.3-SNAPSHOT.1"
 authors = ["Jeremy Chone <jeremy.chone@gmail.com>"]
 edition = "2018"
 description = ""
